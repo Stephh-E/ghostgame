@@ -5,7 +5,6 @@ function App() {
   return (
     <div>
       <Map />
-      <h1>Ghost Game!</h1>
     </div>
   );
 }

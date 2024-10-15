@@ -1,6 +1,6 @@
 import React from 'react';
 import mapsquare from '../assets/mapsquare.png';
-import Ghost from './components/Ghost.jsx';
+import Ghost from './Ghost.jsx';
 
 const Map = () => {
     return (
