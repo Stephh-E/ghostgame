@@ -1,4 +1,6 @@
-import mapsquare from '../assets/mapsquare.png'
+import React from 'react';
+import mapsquare from '../assets/mapsquare.png';
+import Ghost from './components/Ghost.jsx';
 
 const Map = () => {
     return (
@@ -12,8 +14,8 @@ const Map = () => {
         backgroundPosition: 'left', // image on the left
         backgroundRepeat: 'no-repeat'
       }}>
-        {/* Other components like Ghost, Candles, etc., can be rendered here */}
-      </div>
+        <Ghost /> {/* Render the Ghost component */}
+        </div>
     );
   };
   
