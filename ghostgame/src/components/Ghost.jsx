@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ghost1 from '../assets/ghost1.png'; // Path to ghost1 image
 import ghost2 from '../assets/ghost2.png'; // Path to ghost2 image
 
+
 const Ghost = () => {
   const [currentImage, setCurrentImage] = useState(ghost1);
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Initial position
@@ -55,8 +56,8 @@ const Ghost = () => {
     height: '64px',      // Set height of the ghost image
     backgroundImage: `url(${currentImage})`,
     backgroundSize: 'contain', // Ensure the image is contained within the specified dimensions
-    bottom: `${position.y}px`,  // Use dynamic position
-    left: `${position.x}px`,     // Use dynamic position
+    left: position.x,
+    top: position.y, // Change bottom to top to position correctly
   };
 
   return <div style={ghostStyle} />;
