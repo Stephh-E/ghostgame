@@ -6,7 +6,7 @@ const Ghost = () => {
   const [currentImage, setCurrentImage] = useState(ghost1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [targetPosition, setTargetPosition] = useState(position);
-  const [velocity, setVelocity] = useState(5); // Initial velocity
+  const [velocity, setVelocity] = useState(5);
   const gridSize = 10; // Grid size for movement
 
   // Define the boundaries based on your map dimensions
@@ -16,7 +16,6 @@ const Ghost = () => {
     top: 0,
     bottom: window.innerHeight - 64, // Adjust based on ghost's height
   };
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,22 +35,22 @@ const Ghost = () => {
 
       switch (key) {
         case 'ArrowUp':
-          newTargetPosition.y = Math.max(newTargetPosition.y - gridSize, 0);
+          newTargetPosition.y = Math.max(newTargetPosition.y - gridSize, boundary.top);
           break;
         case 'ArrowDown':
-          newTargetPosition.y = Math.min(newTargetPosition.y + gridSize, window.innerHeight - 64);
+          newTargetPosition.y = Math.min(newTargetPosition.y + gridSize, boundary.bottom);
           break;
         case 'ArrowLeft':
-          newTargetPosition.x = Math.max(newTargetPosition.x - gridSize, 0);
+          newTargetPosition.x = Math.max(newTargetPosition.x - gridSize, boundary.left);
           break;
         case 'ArrowRight':
-          newTargetPosition.x = Math.min(newTargetPosition.x + gridSize, window.innerWidth - 64);
+          newTargetPosition.x = Math.min(newTargetPosition.x + gridSize, boundary.right);
           break;
         default:
           break;
       }
 
-      // Set target position and increase velocity on first press
+      // Set target position
       if (newTargetPosition !== targetPosition) {
         setTargetPosition(newTargetPosition);
         setVelocity(10); // Increase velocity on first press
@@ -67,7 +66,6 @@ const Ghost = () => {
 
   useEffect(() => {
     const animate = () => {
-      // Smoothly move towards the target position
       setPosition((prevPosition) => {
         const distanceX = targetPosition.x - prevPosition.x;
         const distanceY = targetPosition.y - prevPosition.y;
@@ -81,7 +79,7 @@ const Ghost = () => {
       requestAnimationFrame(animate);
     };
 
-    animate(); // Start the animation loop
+    animate();
 
     return () => {
       // Cleanup if necessary
