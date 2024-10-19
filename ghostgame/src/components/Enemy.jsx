@@ -1,50 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import enemy1 from '../assets/enemy1.png'; // Path to enemy1 image
-import enemy2 from '../assets/enemy2.png'; // Path to enemy2 image
+import enemy1 from '../assets/enemy1.png';
+import enemy2 from '../assets/enemy2.png';
 
 const Enemy = ({ position }) => {
   const [enemyPosition, setEnemyPosition] = useState(position);
   const [currentImage, setCurrentImage] = useState(enemy1);
+  const [direction, setDirection] = useState(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Randomly change direction (up, down, left, right)
-      const direction = Math.floor(Math.random() * 4); // 0: up, 1: down, 2: left, 3: right
-      const newPosition = { ...enemyPosition };
+    const changeDirection = () => {
+      const newDirection = Math.floor(Math.random() * 4);
+      setDirection(newDirection);
+    };
 
-      switch (direction) {
-        case 0: // Move up
-          newPosition.y = Math.max(0, newPosition.y - 10);
-          break;
-        case 1: // Move down
-          newPosition.y = Math.min(window.innerHeight - 64, newPosition.y + 10);
-          break;
-        case 2: // Move left
-          newPosition.x = Math.max(0, newPosition.x - 10);
-          break;
-        case 3: // Move right
-          newPosition.x = Math.min(window.innerWidth - 64, newPosition.x + 10);
-          break;
-        default:
-          break;
+    // Change direction every 2 seconds
+    const directionInterval = setInterval(changeDirection, 2000);
+
+    // Move the enemy in the current direction
+    const moveInterval = setInterval(() => {
+      if (direction !== null) {
+        const newPosition = { ...enemyPosition };
+        let newDirection = direction;
+
+        switch (direction) {
+          case 0: // Move up
+            newPosition.y -= 5; // Move 5 pixels up
+            if (newPosition.y < 0) newDirection = 1; // Hit top boundary, go down
+            break;
+          case 1: // Move down
+            newPosition.y += 5; // Move 5 pixels down
+            if (newPosition.y > window.innerHeight - 64) newDirection = 0; // Hit bottom boundary, go up
+            break;
+          case 2: // Move left
+            newPosition.x -= 5; // Move 5 pixels left
+            if (newPosition.x < 0) newDirection = 3; // Hit left boundary, go right
+            break;
+          case 3: // Move right
+            newPosition.x += 5; // Move 5 pixels right
+            if (newPosition.x > window.innerWidth - 64) newDirection = 2; // Hit right boundary, go left
+            break;
+          default:
+            break;
+        }
+
+        setEnemyPosition(newPosition);
+        setDirection(newDirection); // Update direction if boundary is hit
+
+        // Cycle through images
+        setCurrentImage(prevImage => (prevImage === enemy1 ? enemy2 : enemy1));
       }
+    }, 100); // Move every 100ms for smoother movement
 
-      setEnemyPosition(newPosition);
-
-      // Cycle through images
-      setCurrentImage(prevImage => (prevImage === enemy1 ? enemy2 : enemy1));
-
-    }, 1000); // Change direction every second
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [enemyPosition]);
+    return () => {
+      clearInterval(directionInterval);
+      clearInterval(moveInterval);
+    };
+  }, [enemyPosition, direction]);
 
   const enemyStyle = {
     position: 'absolute',
     left: enemyPosition.x,
     top: enemyPosition.y,
-    width: '64px', // Set the width of the enemy image
-    height: '64px', // Set the height of the enemy image
+    width: '64px',
+    height: '64px',
     backgroundImage: `url(${currentImage})`,
     backgroundSize: 'contain',
   };
