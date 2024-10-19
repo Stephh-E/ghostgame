@@ -24,19 +24,19 @@ const Enemy = ({ position }) => {
 
         switch (direction) {
           case 0: // Move up
-            newPosition.y -= 5; // Move 5 pixels up
+            newPosition.y -= 10; // Move 5 pixels up
             if (newPosition.y < 0) newDirection = 1; // Hit top boundary, go down
             break;
           case 1: // Move down
-            newPosition.y += 5; // Move 5 pixels down
+            newPosition.y += 10; // Move 5 pixels down
             if (newPosition.y > window.innerHeight - 64) newDirection = 0; // Hit bottom boundary, go up
             break;
           case 2: // Move left
-            newPosition.x -= 5; // Move 5 pixels left
+            newPosition.x -= 10; // Move 5 pixels left
             if (newPosition.x < 0) newDirection = 3; // Hit left boundary, go right
             break;
           case 3: // Move right
-            newPosition.x += 5; // Move 5 pixels right
+            newPosition.x += 10; // Move 5 pixels right
             if (newPosition.x > window.innerWidth - 64) newDirection = 2; // Hit right boundary, go left
             break;
           default:
