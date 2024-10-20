@@ -76,7 +76,7 @@ const Ghost = ({ enemies }) => {
 
   const checkCollision = () => {
     if (isDead) return;
-
+  
     enemies.forEach((enemy) => {
       const enemyRect = {
         left: enemy.position.x,
@@ -84,24 +84,36 @@ const Ghost = ({ enemies }) => {
         top: enemy.position.y,
         bottom: enemy.position.y + 64,
       };
-
+  
       const ghostRect = {
         left: position.x,
         right: position.x + 64,
         top: position.y,
         bottom: position.y + 64,
       };
-
+  
+      // Check if the ghost's current position overlaps with the enemy's current position
       if (
         ghostRect.right > enemyRect.left &&
         ghostRect.left < enemyRect.right &&
         ghostRect.bottom > enemyRect.top &&
         ghostRect.top < enemyRect.bottom
       ) {
-        setIsDead(true);
+        // Check if they are actually touching
+        if (
+          ghostRect.left < enemyRect.right &&
+          ghostRect.right > enemyRect.left &&
+          ghostRect.top < enemyRect.bottom &&
+          ghostRect.bottom > enemyRect.top
+        ) {
+          setIsDead(true);
+        }
       }
     });
   };
+  
+
+
 
   useEffect(() => {
     const animate = () => {
